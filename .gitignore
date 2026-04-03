@@ -1,3 +1,11 @@
+# .cpg, .dbf, .prj, .shp, .shx, and .tif files
+*.cpg
+*.dbf
+*.prj
+*.shp
+*.shx
+*.tif
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
