@@ -1,27 +1,37 @@
 # WFRTL-land
 
 ## Overview
-The purpose of this project is to generate $41$ datasets of the following schema:
 
-```
-(YEAR: int, 
-COUNTRY: str, 
-CLASS_1_BURN_AREA: km2, 
-CLASS_2_BURN_AREA: km2, 
-CLASS_3_BURN_AREA: km2, 
-CLASS_4_BURN_AREA: km2, 
-CLASS_1_BURN_PERCENTAGE: %, 
-CLASS_2_BURN_PERCENTAGE: %, 
-CLASS_3_BURN_PERCENTAGE: %, 
-CLASS_4_BURN_PERCENTAGE: %)
-```
+This project computes annual wildfire burn area statistics by land cover class for Canada and the United States over the period 1984–2024. For each year and country, the following metrics are produced:
 
-such that `YEAR` is in the range (1984, 2025), `COUNTRY` is in ("Canada", "United States"), and `CLASS_N_BURN_PERCENTAGE` is taken as a percentage of the area of the subject country.
+| Field                     | Type  | Description                                             |
+|:------------------------- |:----- |:------------------------------------------------------- |
+| `YEAR`                    | `int` | Year of record, in the range [1984, 2024]               |
+| `COUNTRY`                 | `str` | One of `"Canada"` or `"United States"`                  |
+| `CLASS_1_BURN_AREA`       | `km²` | Burn area classified as Forest                          |
+| `CLASS_2_BURN_AREA`       | `km²` | Burn area classified as Shrubland/Grassland/Cropland    |
+| `CLASS_3_BURN_AREA`       | `km²` | Burn area classified as Urban                           |
+| `CLASS_4_BURN_AREA`       | `km²` | Burn area classified as Barren/Wetland/Water/Snow/Ice   |
+| `CLASS_1_BURN_PERCENTAGE` | `%`   | Class 1 burn area as a percentage of total country area |
+| `CLASS_2_BURN_PERCENTAGE` | `%`   | Class 2 burn area as a percentage of total country area |
+| `CLASS_3_BURN_PERCENTAGE` | `%`   | Class 3 burn area as a percentage of total country area |
+| `CLASS_4_BURN_PERCENTAGE` | `%`   | Class 4 burn area as a percentage of total country area |
 
-## Data & Project Structure
-The data required by this program is not intended to be published to github due to its volume. However, tifs/land_cover/land_cover.tif can be downloaded from [here](https://www.cec.org/files/atlas/?z=3&x=-119.4434&y=48.5748&lang=en&layers=polbounds%2Clandcover2015ls&opacities=100%2C100&labels=true), shps/countries/countries.* can be downloaded from [here](https://www.arcgis.com/home/item.html?id=fa510018bdd044b08fc64d2a16bc680a), and shps/fire_polys/fire_polys*/fire_polys.* can be downloaded from [NO LINK PROVIDED].
+Land cover classification is derived from the 2015 NALCMS 30m land cover product and is held constant across all years.
 
-In order for certain global variables to resolve correctly at import, this project must have the following structure:
+## Data
+
+The datasets required by this program are not included in this repository due to their size. They must be downloaded and placed according to the project structure outlined below.
+
+| Dataset                 | Source                                                                                                                                                   |
+|:----------------------- |:-------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Land cover raster       | [NALCMS 2015 30m](https://www.cec.org/files/atlas/?z=3&x=-119.4434&y=48.5748&lang=en&layers=polbounds%2Clandcover2015ls&opacities=100%2C100&labels=true) |
+| Country boundaries      | [ArcGIS](https://www.arcgis.com/home/item.html?id=fa510018bdd044b08fc64d2a16bc680a)                                                                      |
+| Fire perimeter polygons | No source provided                                                                                                                                       |
+
+## Project Structure
+
+The following directory structure is required for all file paths to resolve correctly at runtime:
 
 ```
 .
@@ -40,9 +50,7 @@ In order for certain global variables to resolve correctly at import, this proje
 │       │   ├── fire_polys1984.prj
 │       │   ├── fire_polys1984.shp
 │       │   └── fire_polys1984.shx
-│       │   .
-│       │   .
-│       │   .
+│       │   ...
 │       └── fire_polys2024
 │           ├── fire_polys2024.cpg
 │           ├── fire_polys2024.dbf
@@ -54,8 +62,9 @@ In order for certain global variables to resolve correctly at import, this proje
 │       └── land_cover.tif
 ```
 
-## Compilation & Execution
-This program can be compiled and executed with the following commands. This assumes the current working directory contains `__main__.py` and the required data and project structure is correct.
+## Setup & Execution
+
+The following commands will create a virtual environment, install dependencies, and run the program. It is assumed that the current working directory contains `__main__.py` and that the required project structure is in place.
 
 ```sh
 python3 -m venv venv
