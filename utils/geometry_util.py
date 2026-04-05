@@ -1,47 +1,53 @@
+"""
+utils.geometry_util
+"""
+
 import geopandas
-import numpy
 
-from shapely import Geometry
+from shapely.geometry.base import BaseGeometry
 
-
-def get_geom_by_idx(gdf: geopandas.GeoDataFrame, idx: numpy.int64) -> Geometry:
+def get_geom_by_idx(gdf: geopandas.GeoDataFrame, idx: int) -> BaseGeometry:
     """
-    Get a :class:`shapely.Geometry` from a :obj:`geopandas.GeoDataFrame` by positional index.
+    Get the :class:`shapely.geometry.base.BaseGeometry` from a :obj:`geopandas.GeoDataFrame`.
 
     Parameters
     ----------
     gdf : :obj:`geopandas.GeoDataFrame`
-        :obj:`geopandas.GeoDataFrame`.
-    idx : :class:`numpy.int64`
-        Positional index.
+        The :obj:`geopandas.GeoDataFrame`.
+    idx : int
+        The positional index.
 
     Returns
     ----------
-    :class:`shapely.Geometry`
+    :class:`shapely.geometry.base.BaseGeometry`
     """
-    
+
     return gdf.geometry.iloc[idx]
 
 
-def get_geom_by_key_value_pair(gdf: geopandas.GeoDataFrame, key: str, value: str) -> Geometry:
+def get_geom_by_key_value_pair(gdf: geopandas.GeoDataFrame, key: str, value: str) -> BaseGeometry:
     """
-    Get a :class:`shapely.Geometry` from a :obj:`geopandas.GeoDataFrame` by (key, value) pair.
+    Get the  :class:`shapely.geometry.base.BaseGeometry` from a :obj:`geopandas.GeoDataFrame`.
 
     Parameters
     ----------
     gdf : :obj:`geopandas.GeoDataFrame`
-        :obj:`geopandas.GeoDataFrame`.
+        The :obj:`geopandas.GeoDataFrame`.
     key : str
-        Some column label.
+        The column label.
     value : str
-        Some unique cell value in subject column.
+        The unique cell value in subject column.
 
     Returns
     ----------
-    :class:`shapely.Geometry`
+    :class:`shapely.geometry.base.BaseGeometry`
+
+    Notes
+    -----
+    Asserts that exactly one record matches the given (key, value) pair.
     """
 
     idx = gdf[gdf[key] == value].index
 
     assert len(idx) == 1, f"count of records having ({key}, {value}) expected to equal 1, got: {len(idx)}"
-    return get_geom_by_idx(gdf, idx[0])
+    return get_geom_by_idx(gdf, int(idx[0]))
