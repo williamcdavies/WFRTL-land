@@ -2,9 +2,11 @@
 utils.geometry_util
 """
 
+
 import geopandas
 
 from shapely.geometry.base import BaseGeometry
+
 
 def get_geom_by_idx(gdf: geopandas.GeoDataFrame, idx: int) -> BaseGeometry:
     """
