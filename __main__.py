@@ -85,7 +85,6 @@ def main() -> int:
                     window = get_window(clipped_fire_poly_geom)
 
                     if not window.width > 1 or not window.height > 1:
-                        error_count += 1
                         continue
                     # If the bounding box of the clipped fire_poly geometry cannot be represented a-
                     # s a positive integer, continue. This can occur if the clipped fire_poly goemt-
@@ -95,7 +94,6 @@ def main() -> int:
                     band_data        = get_band_data(land_cover_tif, 1, window)
 
                     if not band_data.shape[0] > 1 or not band_data.shape[1] > 1:
-                        error_count += 1
                         continue
                     # If the shape of the band data cannot be represented as a positive integer, co-
                     # ntinue. This can occur if the clipped fire_poly goemtry is smaller than 30 me-
@@ -130,8 +128,6 @@ def main() -> int:
                 records.append(record)
 
                 print_progress_bar(str(year), fire_polys_count, fire_polys_count, country_name, "Processed", time.time() - t, True)
-
-    print(f"Skipped geometries: {error_count}")
 
     pandas.DataFrame(records).to_csv(OUTPUT_CSV, index=False)
 
