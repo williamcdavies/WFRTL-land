@@ -2,11 +2,22 @@
 utils.globals
 """
 
+
 import pathlib
 
 import numpy
 import rasterio
 
+
+PIXEL_AREA_KM2 = 0.0009
+"""
+30 meters by 30 meters expressed in km2
+"""
+
+OUTPUT_CSV     = pathlib.Path.cwd() / "wfrtl-land.csv"
+"""
+Path to the output destination
+"""
 
 MAIN_SRC_DIR   = pathlib.Path(__file__).parent.parent
 """
