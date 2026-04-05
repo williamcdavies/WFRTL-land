@@ -1,5 +1,10 @@
-import numpy
+"""
+utils.globals
+"""
+
 import pathlib
+
+import numpy
 import rasterio
 
 
@@ -43,12 +48,12 @@ RANGE_OF_YEARS = range(1984, 2025)
 Range of years for which burn area geometries are available.
 """
 
-CRS = None
+CRS:       rasterio.crs.CRS             = None
 """
 Coordinate Reference System (CRS) of :obj:`LAND_COVER_TIF`.
 """
 
-TRANSFORM = None
+TRANSFORM: rasterio.transform.TRANSFORM = None
 """
 Transform of :obj:`LAND_COVER_TIF`.
 """
