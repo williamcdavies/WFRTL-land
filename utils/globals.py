@@ -1,3 +1,4 @@
+import numpy
 import pathlib
 import rasterio
 
@@ -46,49 +47,51 @@ CRS = None
 """
 Coordinate Reference System (CRS) of :obj:`LAND_COVER_TIF`.
 """
+
+TRANSFORM = None
+"""
+Transform of :obj:`LAND_COVER_TIF`.
+"""
+
 with rasterio.open(LAND_COVER_TIF) as land_cover_tif:
-    CRS = land_cover_tif.crs # assigned here
+    CRS       = land_cover_tif.crs       # assigned here
+    TRANSFORM = land_cover_tif.transform # assigned here
 
+RAST_VALUE_TO_CLASS_ID = {
+    1: 1, 2: 1, 3: 1, 4: 1, 5: 1, 6: 1,
+    7: 2, 8: 2, 9: 2, 10: 2, 11: 2, 12: 2, 15: 2,
+    17: 3,
+    13: 4, 14: 4, 16: 4, 18: 4, 19: 4,
+}
+"""
+Mapping of NALCMS raster values to land cover class IDs.
 
-# import numpy
-# import rasterio
+- Class 1 (Forest):                        raster values 1-6
+- Class 2 (Shrubland/Grassland/Cropland):  raster values 7-12, 15
+- Class 3 (Urban):                         raster value 17
+- Class 4 (Barren/Wetland/Water/Snow/Ice): raster values 13, 14, 16, 18, 19
+"""
 
+CLASS_ID_TO_CLASS_NAME = {
+    1: "Forest",
+    2: "Shrubland/Grassland/Cropland",
+    3: "Urban",
+    4: "Barren/Wetland/Water/Snow/Ice",
+}
+"""
+Mapping of land cover class IDs to land cover class names.
 
+- Class 1 (raster values 1-6):                Forest
+- Class 2 (raster values 7-12, 15):           Shrubland/Grassland/Cropland
+- Class 3 (raster value 17):                  Urban
+- Class 4 (raster values 13, 14, 16, 18, 19): Barren/Wetland/Water/Snow/Ice
+"""
 
+LUT = numpy.zeros(256, dtype=numpy.uint8)
+"""
+256-element lookup table mapping raster values to land cover class IDs. Unmapped values default to 
+0.
+"""
 
-# PATH_TO_COUNTRIES_SHP  = "../shps/countries/countries.shp"
-# PATH_TO_FIRE_POLYS_DIR = "../shps/fire_polys/"
-# PATH_TO_LAND_COVER_DIR = "../land_cover_2015v4_30m_tif"
-# PATH_TO_LAND_COVER_TIF = "../land_cover_2015v4_30m_tif/NA_NALCMS_landcover_2015v4_30m/data/NA_NALCMS_landcover_2015v4_30m.tif"
-
-# SET_OF_COUNTRIES = ["Canada", "United States"]
-# RANGE_OF_YEARS   = range(1984, 2025) # = [1984, 2024]
-
-# RAST_VALUE_TO_CLASS_ID = {
-#     # RAST VALUES IN (1,2,3,4,5,6)       MAP TO CLASS ID 1
-#     1: 1, 2: 1, 3: 1, 4: 1, 5: 1, 6: 1,
-#     # RAST VALUES IN (7,8,9,10,11,12,15) MAP TO CLASS ID 2
-#     7: 2, 8: 2, 9: 2, 10: 2, 11: 2, 12: 2, 15: 2,
-#     # RAST VALUES IN (17)                MAP TO CLASS ID 3
-#     17: 3,
-#     # RAST VALUES IN (13,14,16,18,19)    MAP TO CLASS ID 4
-#     13: 4, 14: 4, 16: 4, 18: 4, 19: 4,
-# }
-
-# CLASS_ID_TO_CLASS_NAME = {
-#     1: "Forest",
-#     2: "Shrubland/Grassland/Cropland",
-#     3: "Urban",
-#     4: "Barren/Wetland/Water/Snow/Ice",
-# }
-
-# NODATA = 127
-
-# LUT = numpy.zeros(256, dtype=numpy.uint8)
-# for rast_value, class_id in RAST_VALUE_TO_CLASS_ID.items():
-#     LUT[rast_value] = class_id
-
-# with rasterio.open(PATH_TO_LAND_COVER_TIF) as src:
-#     CRS               = src.crs
-#     TRANSFORM         = src.transform
-#     PIXEL_AREA_IN_KM2 = abs(TRANSFORM.a * TRANSFORM.e) / 1e6
+for rast_value, class_id in RAST_VALUE_TO_CLASS_ID.items():
+    LUT[rast_value] = class_id # assigned here
