@@ -27,6 +27,7 @@ def main() -> int:
     canada_geom        = get_geom_by_key_value_pair(countries_gdf, "NAME", "Canada"       )
     united_states_geom = get_geom_by_key_value_pair(countries_gdf, "NAME", "United States")
     error_count        = 0
+    shape_count        = 0 
 
     with rasterio.open(LAND_COVER_TIF) as land_cover_tif:
         # Open handle to land_cover.tif.
@@ -110,6 +111,8 @@ def main() -> int:
 
                     print_progress_bar(str(year), i - 1, fire_polys_count, country_name, "Processed", time.time() - t, False)
 
+                shape_count += i
+
                 record = {
                     "YEAR":    year, 
                     "COUNTRY": country_name
@@ -129,6 +132,8 @@ def main() -> int:
 
                 print_progress_bar(str(year), fire_polys_count, fire_polys_count, country_name, "Processed", time.time() - t, True)
 
+    print(f"Invalidity rate: {(error_count/shape_count) * 100:.1f}%")
+    
     pandas.DataFrame(records).to_csv(OUTPUT_CSV, index=False)
 
     return 0
