@@ -49,7 +49,7 @@ def main() -> int:
             ]:
                 # Do the following for each country in ("Canada", "United States"):
 
-                class_id_counts = numpy.zeros(5, dtype=numpy.int64)
+                class_id_counts = numpy.zeros(20, dtype=numpy.int64)
                 # Initialise a 1-indexed array to accumulate class id counts for the subject (year,-
                 #  country). Index 0 is unused.
 
@@ -104,8 +104,8 @@ def main() -> int:
                     band_data[geometry_mask] = 0
                     class_id_data            = LUT[band_data]
 
-                    for class_id in range(1, 5):
-                        # Do the following for each land cover class in the range (1, 5):
+                    for class_id in range(1, 20):
+                        # Do the following for each land cover class in the range (1, 20):
 
                         class_id_counts[class_id] += numpy.sum(class_id_data == class_id)
 
@@ -118,7 +118,7 @@ def main() -> int:
                     "COUNTRY": country_name
                 }
 
-                for class_id in range(1, 5):
+                for class_id in range(1, 20):
                     class_id_count = class_id_counts[class_id]
                     burn_area_km2  = class_id_count * PIXEL_AREA_KM2
                     burn_area_pct  = burn_area_km2  / (country_geom.area / 1e6)

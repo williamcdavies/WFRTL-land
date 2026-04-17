@@ -14,7 +14,7 @@ PIXEL_AREA_KM2 = 0.0009
 30 meters by 30 meters expressed in km2
 """
 
-OUTPUT_CSV     = pathlib.Path.cwd() / "wfrtl-land.csv"
+OUTPUT_CSV     = pathlib.Path.cwd() / "wfrtl-land2020.csv"
 """
 Path to the output destination
 """
@@ -73,14 +73,9 @@ with rasterio.open(LAND_COVER_TIF) as land_cover_tif:
     CRS       = land_cover_tif.crs       # assigned here
     TRANSFORM = land_cover_tif.transform # assigned here
 
-RAST_VALUE_TO_CLASS_ID = {
-    1: 1, 2: 1, 3: 1, 4: 1, 5: 1, 6: 1,
-    7: 2, 8: 2, 9: 2, 10: 2, 11: 2, 12: 2, 15: 2,
-    17: 3,
-    13: 4, 14: 4, 16: 4, 18: 4, 19: 4,
-}
+RAST_VALUE_TO_CLASS_ID = {i: i for i in range(1, 20)}
 """
-Mapping of NALCMS raster values to land cover class IDs.
+Mapping of NALCMS raster values to land cover class IDs (not applicable for 1:1 label mappings).
 
 - Class 1 (Forest):                        raster values 1-6
 - Class 2 (Shrubland/Grassland/Cropland):  raster values 7-12, 15
@@ -89,13 +84,28 @@ Mapping of NALCMS raster values to land cover class IDs.
 """
 
 CLASS_ID_TO_CLASS_NAME = {
-    1: "Forest",
-    2: "Shrubland/Grassland/Cropland",
-    3: "Urban",
-    4: "Barren/Wetland/Water/Snow/Ice",
+    1:  "Temperate or sub-polar needleaf forest",
+    2:  "Sub-polar taiga needleleaf forest",
+    3:  "Tropical or sub-tropical broadleaf evergreen forest",
+    4:  "Tropical or sub-tropical broadleaf deciduous forest",
+    5:  "Temperate or sub-polar broadleaf deciduous forest",
+    6:  "Mixed forest",
+    7:  "Tropical or sub-tropical shrubland",
+    8:  "Temperate or sub-polar shrubland",
+    9:  "Tropical or sub-tropical grassland",
+    10: "Temperate or sub-polar grassland",
+    11: "Sub-polar or polar shrubland-lichen-moss",
+    12: "Sub-polar or polar grassland-lichen-moss",
+    13: "Sub-polar or polar barren-lichen-moss",
+    14: "Wetland",
+    15: "Cropland",
+    16: "Barren land",
+    17: "Urban and built-up",
+    18: "Water",
+    19: "Snow and ice",
 }
 """
-Mapping of land cover class IDs to land cover class names.
+Mapping of land cover class IDs to land cover class names (not applicable for 1:1 label mappings).
 
 - Class 1 (raster values 1-6):                Forest
 - Class 2 (raster values 7-12, 15):           Shrubland/Grassland/Cropland
